@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\SobreNosController;
+use App\Http\Controllers\TesteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,14 +20,20 @@ use Illuminate\Support\Facades\Route;
 //     return "Home";
 // });
 
-Route::get('/', [PrincipalController::class, 'principal']);
+Route::get('/', [PrincipalController::class, 'principal'])->name('site.index');
+Route::get('/sobrenos', [SobreNosController::class, 'sobreNos'])->name('site.sobrenos');
+Route::get('/contato', [ContatoController::class, 'contato'])->name('site.contato');
+Route::get('/login', function(){ return 'Login';})->name('site.login');
 
 
-Route::get('/sobrenos', [SobreNosController::class, 'sobreNos']);
-
-Route::get('/contato', [ContatoController::class, 'contato']);
-
-Route::get('/contato/{nome}/{categoria}/{assunto}/{mensagem?}',
-     function (string $nome, string $categoria, string $assunto, string $mensagem = 'Mensagem nao informada') {
-    echo "nome: $nome catogoria: $categoria assunto: $assunto mensagem: $mensagem";
+Route::prefix('/app')->group(function() {
+    Route::get('/clientes', function(){ return 'Clientes';})->name('app.clientes');
+    Route::get('/fornecedores', function(){ return 'Fornecedores';})->name('app.fornecedores');
+    Route::get('/produtos', function(){ return 'Produtos';})->name('site.produtos');
 });
+
+Route::fallback(function() {
+    echo 'A rota acessada nao existe. <a href="'.route('site.index').'">Clique aqui</a> para voltar para principal' ;
+});
+
+Route::get('/teste/{p1}/{p2}', [TesteController::class, 'teste'])->name('site.rota1');
