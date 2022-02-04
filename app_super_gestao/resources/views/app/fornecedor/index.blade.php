@@ -13,12 +13,19 @@
 
 
 @isset($fornecedores)
-    Fornecedor: {{ $fornecedores[$numero]['nome'] }}
-    <br />
-    Status: {{ $fornecedores[$numero]['status'] == 'N' ? 'Fornecedor inativo' : 'Fornecedor Ativo' }}
-    <br>
-    CNPJ: {{ $fornecedores[$numero]['cnpj'] ?? "Nao informado" }}
-    
+
+    @forelse ($fornecedores as $index => $fornecedor)
+        Fornecedor: {{ $fornecedor['nome'] ?? ' ' }}
+        <br />
+        Status: {{ $fornecedor['status'] == 'N' ? 'Fornecedor inativo' : 'Fornecedor Ativo' }}
+        <br>
+        CNPJ: {{ $fornecedor['cnpj'] ?? 'Nao informado' }}
+        <br>
+        <hr>
+        @empty
+            Nao existem fornecedores cadastrados
+    @endforelse
+
 @endisset
 
 
